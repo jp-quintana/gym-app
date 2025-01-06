@@ -1,6 +1,10 @@
 import * as Joi from 'joi';
 
-export const configSchema = Joi.object({
+export const envSchema = Joi.object({
+  API_KEY: Joi.string().when('NODE_ENV', {
+    is: 'production',
+    then: Joi.required(),
+  }),
   NODE_ENV: Joi.string()
     .valid('development', 'production', 'test')
     .default('development'),

@@ -1,2 +1,2 @@
-export * from './root.config';
-export * from './joi.config';
+export * from './env.config';
+export * from './env-schema.config';

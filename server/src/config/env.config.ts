@@ -1,4 +1,5 @@
-export const rootConfig = () => ({
+export const envConfig = () => ({
+  apiKey: process.env.API_KEY,
   nodeEnv: process.env.NODE_ENV,
   port: parseInt(process.env.PORT),
   dbType: process.env.DB_TYPE,

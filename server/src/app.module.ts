@@ -2,14 +2,16 @@ import { Module } from '@nestjs/common';
 import { UserModule } from './modules/user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { configSchema, rootConfig } from './config';
+import { envSchema, envConfig } from './config';
 import { AuthModule } from './modules/auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { ApiKeyGuard } from './common/guards';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      validationSchema: configSchema,
-      load: [rootConfig],
+      validationSchema: envSchema,
+      load: [envConfig],
       envFilePath: ['.env.local'],
       isGlobal: true,
     }),
@@ -30,6 +32,11 @@ import { AuthModule } from './modules/auth/auth.module';
     AuthModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ApiKeyGuard,
+    },
+  ],
 })
 export class AppModule {}
