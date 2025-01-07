@@ -23,6 +23,8 @@ export class UserService {
     if (existingUser) {
       throw new ConflictException('A user with this email already exists');
     }
+
+    return this.userRepository.save(createUserDto);
   }
 
   async findOneByEmail(email: string) {
