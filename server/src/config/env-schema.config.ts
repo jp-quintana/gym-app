@@ -17,4 +17,6 @@ export const envSchema = Joi.object({
   DB_NAME: Joi.string().required(),
   ACCESS_TOKEN_SECRET: Joi.string().required(),
   ACCESS_TOKEN_TTL: Joi.string().required(),
+  REFRESH_TOKEN_SECRET: Joi.string().required(),
+  REFRESH_TOKEN_TTL: Joi.string().required(),
 });

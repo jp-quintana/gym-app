@@ -10,4 +10,6 @@ export const envConfig = () => ({
   dbName: process.env.DB_NAME,
   accessTokenSecret: process.env.ACCESS_TOKEN_SECRET,
   accessTokenTtl: process.env.ACCESS_TOKEN_TTL,
+  refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET,
+  refreshTokenTtl: process.env.REFRESH_TOKEN_TTL,
 });
