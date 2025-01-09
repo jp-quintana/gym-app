@@ -1,5 +1,6 @@
 import { Base } from 'src/common/entities';
-import { Column, Entity } from 'typeorm';
+import { AuthSession } from 'src/modules/auth/entities';
+import { Column, Entity, OneToMany } from 'typeorm';
 
 @Entity()
 export class User extends Base {
@@ -14,4 +15,7 @@ export class User extends Base {
 
   @Column({ type: 'boolean', nullable: false, default: false })
   verified: boolean;
+
+  @OneToMany(() => AuthSession, (authSession) => authSession.user)
+  authSessions: AuthSession[];
 }
