@@ -1,4 +1,5 @@
 import * as Joi from 'joi';
+import { validTokenTtl } from 'src/common/utils';
 
 export const envSchema = Joi.object({
   API_KEY: Joi.string().when('NODE_ENV', {
@@ -16,7 +17,11 @@ export const envSchema = Joi.object({
   DB_PASSWORD: Joi.string().required(),
   DB_NAME: Joi.string().required(),
   ACCESS_TOKEN_SECRET: Joi.string().required(),
-  ACCESS_TOKEN_TTL: Joi.string().required(),
+  ACCESS_TOKEN_TTL: Joi.string()
+    .required()
+    .valid(...validTokenTtl),
   REFRESH_TOKEN_SECRET: Joi.string().required(),
-  REFRESH_TOKEN_TTL: Joi.string().required(),
+  REFRESH_TOKEN_TTL: Joi.string()
+    .required()
+    .valid(...validTokenTtl),
 });

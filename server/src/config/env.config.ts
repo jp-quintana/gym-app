@@ -1,3 +1,5 @@
+import { obtainCookieTtl } from 'src/common/utils';
+
 export const envConfig = () => ({
   apiKey: process.env.API_KEY,
   nodeEnv: process.env.NODE_ENV,
@@ -12,4 +14,6 @@ export const envConfig = () => ({
   accessTokenTtl: process.env.ACCESS_TOKEN_TTL,
   refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET,
   refreshTokenTtl: process.env.REFRESH_TOKEN_TTL,
+  accessCookieTtl: obtainCookieTtl(process.env.ACCESS_TOKEN_TTL),
+  refreshCookieTtl: obtainCookieTtl(process.env.REFRESH_TOKEN_TTL),
 });

@@ -11,11 +11,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { AuthSession } from './entities';
 import { Repository } from 'typeorm';
 import { AuthTokens } from './interfaces';
+import { Response } from 'express';
 
+// TODO: set cookie and add isMobile flag to request body to adjust response based on request device
 @Injectable()
 export class AuthService {
   private generateAccessToken: (payload: JwtPayload) => string;
   private generateTokens: (payload: JwtPayload) => AuthTokens;
+  private setRefreshTokenCookie: (refreshToken: string, res: Response) => void;
 
   constructor(
     @InjectRepository(AuthSession)
@@ -48,14 +51,20 @@ export class AuthService {
         exp: number;
       };
 
-      // TODO: set cookie and add isMobile flag to request body to adjust response based on request device
-
       return {
         accessToken,
         refreshToken,
         accessTokenExpiresAt: new Date(accessExp * 1000),
         refreshTokenExpiresAt: new Date(refreshExp * 1000),
       };
+    };
+    this.setRefreshTokenCookie = (refreshToken: string, res: Response) => {
+      res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        secure: this.configService.get<string>('nodeEnv') === 'production',
+        sameSite: 'strict',
+        maxAge: this.configService.get<number>('refreshCookieTtl'),
+      });
     };
   }
 
@@ -73,7 +82,7 @@ export class AuthService {
     };
   }
 
-  async login(loginUserDto: LoginUserDto) {
+  async login(loginUserDto: LoginUserDto, res: Response) {
     const user = await this.usersService.findOneByEmail(loginUserDto.email);
 
     const isPasswordValid = await bcrypt.compare(
@@ -94,11 +103,19 @@ export class AuthService {
       refreshTokenExpiresAt,
     } = this.generateTokens(payload);
 
-    return {
+    await this.authSessionRepository.save({
+      refreshToken,
+      expiresAt: refreshTokenExpiresAt,
+      userId: user.id,
+    });
+
+    this.setRefreshTokenCookie(refreshToken, res);
+
+    res.send({
       accessToken,
       refreshToken,
       accessTokenExpiresAt,
       refreshTokenExpiresAt,
-    };
+    });
   }
 }
