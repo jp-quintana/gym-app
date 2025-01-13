@@ -18,7 +18,11 @@ import { Response } from 'express';
 export class AuthService {
   private generateAccessToken: (payload: JwtPayload) => string;
   private generateTokens: (payload: JwtPayload) => AuthTokens;
-  private setRefreshTokenCookie: (refreshToken: string, res: Response) => void;
+  private setTokensInCookie: (
+    accessToken: string,
+    refreshToken: string,
+    res: Response,
+  ) => void;
 
   constructor(
     @InjectRepository(AuthSession)
@@ -58,7 +62,18 @@ export class AuthService {
         refreshTokenExpiresAt: new Date(refreshExp * 1000),
       };
     };
-    this.setRefreshTokenCookie = (refreshToken: string, res: Response) => {
+    this.setTokensInCookie = (
+      accessToken: string,
+      refreshToken: string,
+      res: Response,
+    ) => {
+      // res.cookie('Authorization', `Bearer ${accessToken}`, {
+      //   httpOnly: true,
+      //   secure: this.configService.get<string>('nodeEnv') === 'production',
+      //   sameSite: 'strict',
+      //   maxAge: this.configService.get<number>('accessCookieTtl'),
+      // });
+
       res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
         secure: this.configService.get<string>('nodeEnv') === 'production',
@@ -109,7 +124,7 @@ export class AuthService {
       userId: user.id,
     });
 
-    this.setRefreshTokenCookie(refreshToken, res);
+    this.setTokensInCookie(accessToken, refreshToken, res);
 
     res.send({
       accessToken,
