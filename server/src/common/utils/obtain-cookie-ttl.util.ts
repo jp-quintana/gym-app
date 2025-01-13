@@ -6,7 +6,7 @@ export const obtainCookieTtl = (ttl = '') => {
     y: 60 * 60 * 24 * 365,
   };
 
-  const defaultTtl = timeUnitMap.d * 30 * 6;
+  const defaultTtl = timeUnitMap.d * 30 * 6 * 1000;
 
   if (ttl.length === 0) return defaultTtl;
 
@@ -15,5 +15,5 @@ export const obtainCookieTtl = (ttl = '') => {
 
   if (!timeUnitValue) return defaultTtl;
 
-  return +ttlValue * timeUnitValue;
+  return +ttlValue * timeUnitValue * 1000;
 };

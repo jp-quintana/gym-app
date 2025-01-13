@@ -67,13 +67,12 @@ export class AuthService {
       refreshToken: string,
       res: Response,
     ) => {
-      // res.cookie('Authorization', `Bearer ${accessToken}`, {
-      //   httpOnly: true,
-      //   secure: this.configService.get<string>('nodeEnv') === 'production',
-      //   sameSite: 'strict',
-      //   maxAge: this.configService.get<number>('accessCookieTtl'),
-      // });
-
+      res.cookie('accessToken', accessToken, {
+        httpOnly: true,
+        secure: this.configService.get<string>('nodeEnv') === 'production',
+        sameSite: 'strict',
+        maxAge: this.configService.get<number>('accessCookieTtl'),
+      });
       res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
         secure: this.configService.get<string>('nodeEnv') === 'production',
