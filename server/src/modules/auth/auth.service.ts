@@ -5,7 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from 'src/common/dtos';
 
 import * as bcrypt from 'bcrypt';
-import { JwtPayload } from 'src/common/interfaces';
+import { JwtPayload, UserRequest } from 'src/common/interfaces';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuthSession } from './entities';
@@ -132,4 +132,6 @@ export class AuthService {
       refreshTokenExpiresAt,
     });
   }
+
+  async refresh(req: UserRequest, res: Response) {}
 }
