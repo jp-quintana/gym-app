@@ -14,31 +14,29 @@ export class RefreshGuard implements CanActivate {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
   ) {}
-
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest();
-    const token = this.extractTokenFromHeader(request);
+    // const request = context.switchToHttp().getRequest();
+    // const token = this.extractTokenFromHeader(request);
 
-    if (!token) {
-      throw new UnauthorizedException();
-    }
-    try {
-      const payload = await this.jwtService.verifyAsync(token, {
-        secret: this.configService.get<string>('accessTokenSecret'),
-      });
+    // if (!token) {
+    //   throw new UnauthorizedException();
+    // }
+    // try {
+    //   const payload = await this.jwtService.verifyAsync(token, {
+    //     secret: this.configService.get<string>('accessTokenSecret'),
+    //   });
 
-      request['user'] = payload;
-    } catch {
-      throw new UnauthorizedException();
-    }
+    //   request['user'] = payload;
+    // } catch {
+    //   throw new UnauthorizedException();
+    // }
     return true;
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
-    if (request.cookies.accessToken)
-      return request.cookies.accessToken as string;
-
-    const [type, token] = request.headers.authorization?.split(' ') ?? [];
-    return type === 'Bearer' ? token : undefined;
+    // if (request.cookies.accessToken)
+    //   return request.cookies.accessToken as string;
+    // const [type, token] = request.headers.authorization?.split(' ') ?? [];
+    // return type === 'Bearer' ? token : undefined;
   }
 }
