@@ -34,8 +34,8 @@ export class RefreshGuard implements CanActivate {
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
-    if (request.cookies.accessToken)
-      return request.cookies.accessToken as string;
+    if (request.cookies.refreshToken)
+      return request.cookies.refreshToken as string;
     const [type, token] = request.headers.authorization?.split(' ') ?? [];
     return type === 'Bearer' ? token : undefined;
   }
