@@ -16,7 +16,7 @@ export class RefreshGuard implements CanActivate {
   ) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const token = this.extractTokenFromHeader(request);
+    const token = this.extractToken(request);
 
     if (!token) {
       throw new UnauthorizedException();
@@ -33,7 +33,7 @@ export class RefreshGuard implements CanActivate {
     return true;
   }
 
-  private extractTokenFromHeader(request: Request): string | undefined {
+  private extractToken(request: Request): string | undefined {
     if (request.cookies.refreshToken)
       return request.cookies.refreshToken as string;
     const [type, token] = request.headers.authorization?.split(' ') ?? [];
