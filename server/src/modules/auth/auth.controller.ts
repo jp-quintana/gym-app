@@ -2,9 +2,9 @@ import { Body, Controller, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginUserDto } from './dtos';
 import { CreateUserDto } from 'src/common/dtos';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { UserRequest } from 'src/common/interfaces';
-import { AuthGuard } from 'src/common/guards';
+import { RefreshGuard } from 'src/common/guards';
 
 @Controller('auth')
 export class AuthController {
@@ -21,7 +21,7 @@ export class AuthController {
   }
 
   @Post('refresh')
-  @UseGuards(AuthGuard)
+  @UseGuards(RefreshGuard)
   refresh(@Req() req: UserRequest, @Res() res: Response) {
     return this.authService.refresh(req, res);
   }
