@@ -16,11 +16,15 @@ export class RefreshGuard implements CanActivate {
   ) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
+    const response = context.switchToHttp().getResponse();
     const token = this.extractToken(request);
 
     if (!token) {
       throw new UnauthorizedException();
     }
+
+    response.clearCookie('refreshToken');
+
     try {
       const payload = await this.jwtService.verifyAsync(token, {
         secret: this.configService.get<string>('refreshTokenSecret'),
