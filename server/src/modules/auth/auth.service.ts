@@ -92,7 +92,7 @@ export class AuthService {
     const payload = { userId: user.id, email: user.email };
 
     return {
-      accessToken: await this.generateAccessToken(payload),
+      accessToken: this.generateAccessToken(payload),
     };
   }
 
@@ -133,5 +133,11 @@ export class AuthService {
     });
   }
 
-  async refresh(req: UserRequest, res: Response) {}
+  async refresh(req: UserRequest, res: Response) {
+    const user = await this.usersService.findOneByEmail(req.user.userId);
+
+    if (user.deleted) {
+      throw new UnauthorizedException('User account deleted');
+    }
+  }
 }
