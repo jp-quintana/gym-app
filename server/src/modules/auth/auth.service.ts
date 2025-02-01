@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { LoginUserDto } from './dtos';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
@@ -134,9 +138,44 @@ export class AuthService {
   }
 
   async refresh(req: UserRequest, res: Response) {
-    // const user = await this.usersService.findOneByEmail(req.user.userId);
-    // if (user.deleted) {
-    //   throw new UnauthorizedException('User account deleted');
-    // }
+    const user = await this.usersService.findOneByEmail(req.user.userId);
+
+    if (user.deleted) {
+      throw new UnauthorizedException('User account deleted');
+    }
+
+    // TODO: update
+    const authSession = await this.authSessionRepository.findOne({
+      where: { userId: user.id, deleted: false },
+    });
+
+    if (!authSession) {
+      throw new UnauthorizedException('No active session found');
+    }
+
+    if (authSession.expiresAt < new Date()) {
+      throw new UnauthorizedException('Refresh token expired');
+    }
+
+    const payload = { userId: user.id, email: user.email };
+
+    const {
+      accessToken,
+      refreshToken,
+      accessTokenExpiresAt,
+      refreshTokenExpiresAt,
+    } = this.generateTokens(payload);
+
+    try {
+      res.send({
+        accessToken,
+        refreshToken,
+        accessTokenExpiresAt,
+        refreshTokenExpiresAt,
+      });
+    } catch (error: any) {
+      console.error('Error during refresh:', error);
+      throw new BadRequestException('Failed to refresh tokens');
+    }
   }
 }
