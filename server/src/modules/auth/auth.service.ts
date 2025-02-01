@@ -144,9 +144,8 @@ export class AuthService {
       throw new UnauthorizedException('User account deleted');
     }
 
-    // TODO: update
-    const authSession = await this.authSessionRepository.findOne({
-      where: { userId: user.id, deleted: false },
+    let authSession = await this.authSessionRepository.findOne({
+      where: { refreshToken: req.user?.refreshToken, deleted: false },
     });
 
     if (!authSession) {
@@ -167,6 +166,17 @@ export class AuthService {
     } = this.generateTokens(payload);
 
     try {
+      authSession.deleted = true;
+      await this.authSessionRepository.save(authSession);
+
+      await this.authSessionRepository.save({
+        refreshToken,
+        expiresAt: refreshTokenExpiresAt,
+        userId: user.id,
+      });
+
+      this.setTokensInCookie(accessToken, refreshToken, res);
+
       res.send({
         accessToken,
         refreshToken,

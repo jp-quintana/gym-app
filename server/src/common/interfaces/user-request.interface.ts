@@ -6,5 +6,6 @@ export interface UserRequest extends Request {
     email: string;
     iat: number;
     exp: number;
+    refreshToken?: string;
   };
 }

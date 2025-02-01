@@ -27,7 +27,7 @@ export class RefreshGuard implements CanActivate {
         secret: this.configService.get<string>('refreshTokenSecret'),
       });
 
-      request['user'] = payload;
+      request['user'] = { ...payload, refreshToken: token };
     } catch {
       throw new UnauthorizedException();
     }
