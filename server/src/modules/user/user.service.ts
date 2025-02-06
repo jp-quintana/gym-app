@@ -42,4 +42,24 @@ export class UserService {
 
     return user;
   }
+
+  async deleteOneByEmail(email: string) {
+    let user = await this.userRepository.findOne({ where: { email } });
+
+    if (!user) throw new NotFoundException('User not found');
+
+    user.deleted = true;
+
+    return this.userRepository.save(user);
+  }
+
+  async deleteOneById(id: string) {
+    let user = await this.userRepository.findOne({ where: { id } });
+
+    if (!user) throw new NotFoundException('User not found');
+
+    user.deleted = true;
+
+    return this.userRepository.save(user);
+  }
 }
