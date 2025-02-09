@@ -140,10 +140,6 @@ export class AuthService {
   async refresh(req: UserRequest, res: Response) {
     const user = await this.usersService.findOneByEmail(req.user.userId);
 
-    if (user.deleted) {
-      throw new UnauthorizedException('User account deleted');
-    }
-
     let authSession = await this.authSessionRepository.findOne({
       where: { refreshToken: req.user?.refreshToken, deleted: false },
     });

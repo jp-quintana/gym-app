@@ -30,7 +30,7 @@ export class UserService {
   async findOneByEmail(email: string) {
     const user = await this.userRepository.findOne({ where: { email } });
 
-    if (!user) throw new NotFoundException('User not found');
+    if (!user || user.deleted) throw new NotFoundException('User not found');
 
     return user;
   }
@@ -38,7 +38,7 @@ export class UserService {
   async findOneById(id: string) {
     const user = await this.userRepository.findOne({ where: { id } });
 
-    if (!user) throw new NotFoundException('User not found');
+    if (!user || user.deleted) throw new NotFoundException('User not found');
 
     return user;
   }
@@ -46,7 +46,7 @@ export class UserService {
   async deleteOneByEmail(email: string) {
     let user = await this.userRepository.findOne({ where: { email } });
 
-    if (!user) throw new NotFoundException('User not found');
+    if (!user || user.deleted) throw new NotFoundException('User not found');
 
     user.deleted = true;
 
@@ -56,7 +56,7 @@ export class UserService {
   async deleteOneById(id: string) {
     let user = await this.userRepository.findOne({ where: { id } });
 
-    if (!user) throw new NotFoundException('User not found');
+    if (!user || user.deleted) throw new NotFoundException('User not found');
 
     user.deleted = true;
 
