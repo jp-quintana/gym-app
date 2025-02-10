@@ -137,6 +137,7 @@ export class AuthService {
     });
   }
 
+  // TODO: test
   async refresh(req: UserRequest, res: Response) {
     const user = await this.usersService.findOneByEmail(req.user.userId);
 
