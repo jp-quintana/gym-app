@@ -11,8 +11,10 @@ export default function Index() {
         alignItems: 'center',
       }}
     >
-      {/* <ThemeToggle /> */}
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+      <View style={{ flexDirection: 'row', gap: 10 }}>
+        <ThemeToggle />
+        <Text>Edit app/index.tsx to edit this screen.</Text>
+      </View>
     </View>
   );
 }
