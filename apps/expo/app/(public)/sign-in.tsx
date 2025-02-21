@@ -11,10 +11,7 @@ export default function SignInScreen() {
         alignItems: 'center',
       }}
     >
-      <View style={{ flexDirection: 'row', gap: 10 }}>
-        <ThemeToggle />
-        <Text>Edit app/index.tsx to edit this screen.</Text>
-      </View>
+      <View style={{ flexDirection: 'row', gap: 10 }}></View>
     </View>
   );
 }
