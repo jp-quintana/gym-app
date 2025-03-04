@@ -10,10 +10,10 @@ export default function Index() {
       {/* <Image /> */}
       <View style={{ marginTop: 'auto', gap: 10 }}>
         <Button>
-          <Text>Google login</Text>
+          <Text>Log in as "google account"</Text>
         </Button>
         <Button>
-          <Text>Login</Text>
+          <Text>Log in using another account</Text>
         </Button>
       </View>
     </View>
