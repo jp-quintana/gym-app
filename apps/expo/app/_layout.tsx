@@ -11,6 +11,7 @@ import { useColorScheme } from '@/hooks';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useEffect, useState } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const LIGHT_THEME: Theme = {
   ...DefaultTheme,
@@ -65,8 +66,13 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
       <QueryClientProvider client={queryClient}>
-        {/* <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} /> */}
-        <Slot />
+        <StatusBar
+          style={isDarkColorScheme ? 'light' : 'dark'}
+          translucent={true}
+        />
+        <SafeAreaView style={{ flex: 1 }}>
+          <Slot />
+        </SafeAreaView>
         {Platform.OS === 'web' && <ReactQueryDevtools initialIsOpen={false} />}
       </QueryClientProvider>
     </ThemeProvider>
