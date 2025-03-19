@@ -1,3 +1,4 @@
+import { ThemeToggle } from '@/components';
 import { Button, Text } from '@/components/ui';
 import { View } from 'react-native';
 // import { Image } from 'expo-image';
@@ -8,6 +9,7 @@ export default function Index() {
     <View style={{ flex: 1, padding: 20 }}>
       <Text>Replify</Text>
       {/* <Image /> */}
+      <ThemeToggle />
       <View style={{ marginTop: 'auto', gap: 10 }}>
         <Button>
           <Text>Log in as "google account"</Text>
