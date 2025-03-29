@@ -9,7 +9,7 @@ export default function SignInScreen() {
         alignItems: 'center',
       }}
     >
-      {/* <View style={{ flexDirection: 'row', gap: 10 }}></View> */}
+      <View></View>
     </View>
   );
 }
