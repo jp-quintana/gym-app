@@ -1,4 +1,5 @@
 import { Button, Text } from '@/components/ui';
+import { SocialAuth } from '@/features/auth/components';
 import { Link, useRouter } from 'expo-router';
 import { useState } from 'react';
 import { ImageBackground, View } from 'react-native';
@@ -19,17 +20,10 @@ export default function Index() {
       >
         <SafeAreaView className="p-5 flex-1 justify-center">
           <View className="mt-auto gap-3">
-            <Button
-              onPress={() => console.log('log in with google')}
-              className="bg-white"
-            >
-              <Text className="text-black text-lg">
-                Sign up with "google account"
-              </Text>
-            </Button>
+            <SocialAuth options={['google']} />
             <Button
               onPress={() => router.navigate('/sign-up')}
-              className="bg-cyan-600 w-full"
+              className="bg-cyan-600"
             >
               <Text className="text text-lg">Sign up with email</Text>
             </Button>
