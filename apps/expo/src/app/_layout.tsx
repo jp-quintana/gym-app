@@ -2,7 +2,7 @@ import '@/global.css';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DefaultTheme, Theme, ThemeProvider } from '@react-navigation/native';
-import { Slot, SplashScreen } from 'expo-router';
+import { Slot, SplashScreen, usePathname } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Platform } from 'react-native';
 import { NAV_THEME } from '@/lib';
@@ -11,7 +11,6 @@ import { useColorScheme } from '@/hooks';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useEffect, useState } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 const LIGHT_THEME: Theme = {
   ...DefaultTheme,
@@ -29,6 +28,8 @@ export { ErrorBoundary } from 'expo-router';
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  const pathname = usePathname();
+  const isIndex = pathname === '/';
   const { colorScheme, setColorScheme, isDarkColorScheme } = useColorScheme();
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const [isColorSchemeLoaded, setIsColorSchemeLoaded] = useState(false);
@@ -67,7 +68,7 @@ export default function RootLayout() {
     <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
       <QueryClientProvider client={queryClient}>
         <StatusBar
-          style={isDarkColorScheme ? 'light' : 'dark'}
+          style={isIndex ? 'light' : isDarkColorScheme ? 'light' : 'dark'}
           translucent={true}
         />
         <Slot />
