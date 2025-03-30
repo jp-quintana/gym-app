@@ -24,7 +24,7 @@ export default function Index() {
               className="bg-white"
             >
               <Text className="text-black text-lg">
-                Log in as "google account"
+                Sign up with "google account"
               </Text>
             </Button>
             <Button
