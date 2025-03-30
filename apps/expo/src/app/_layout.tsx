@@ -70,9 +70,7 @@ export default function RootLayout() {
           style={isDarkColorScheme ? 'light' : 'dark'}
           translucent={true}
         />
-        <SafeAreaView style={{ flex: 1 }}>
-          <Slot />
-        </SafeAreaView>
+        <Slot />
         {Platform.OS === 'web' && <ReactQueryDevtools initialIsOpen={false} />}
       </QueryClientProvider>
     </ThemeProvider>

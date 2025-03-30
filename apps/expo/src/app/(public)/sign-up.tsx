@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 
-export default function SignInScreen() {
+export default function SignUpScreen() {
   return (
     <View
       style={{
