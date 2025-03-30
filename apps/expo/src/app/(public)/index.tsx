@@ -15,7 +15,7 @@ export default function Index() {
           <Text>Log in as "google account"</Text>
         </Button>
         <Button>
-          <Text>Log in using another account</Text>
+          <Text>Sign up with email</Text>
         </Button>
       </View>
     </View>
