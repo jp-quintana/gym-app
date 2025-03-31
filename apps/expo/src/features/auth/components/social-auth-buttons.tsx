@@ -5,7 +5,7 @@ import GoogleIcon from '../../../../assets/svgs/google-icon.svg';
 
 export type SocialAuthOptions = 'google';
 
-export interface ISocialAuth {
+export interface ISocialAuthButtons {
   isSignIn?: boolean;
   options: SocialAuthOptions[];
   buttonClassName?: string;
@@ -15,32 +15,30 @@ export interface ISocialAuth {
 const socialAuthOptions = {
   google: {
     name: 'Google',
-    icon: <GoogleIcon className="absolute left-0" />,
+    icon: <GoogleIcon />,
     onPress: () => console.log('Auth with google'),
   },
 };
 
-export const SocialAuth = ({
+export const SocialAuthButtons = ({
   isSignIn = false,
   options = ['google'],
   buttonClassName,
   textClassName,
-}: ISocialAuth) => {
+}: ISocialAuthButtons) => {
   return (
     <View className="gap-3">
       {options.map((option) => (
         <Button
           key={socialAuthOptions[option].name}
           onPress={socialAuthOptions[option].onPress}
-          className={cn('bg-white', buttonClassName)}
+          className={buttonClassName}
         >
           <View className="w-full justify-center">
             <View className="absolute left-0 top-0 bottom-0">
               {socialAuthOptions[option].icon}
             </View>
-            <Text
-              className={cn('text-black text-lg text-center', textClassName)}
-            >
+            <Text className={cn('text-lg text-center', textClassName)}>
               {isSignIn ? 'Sign in' : 'Sign up'} with{' '}
               {socialAuthOptions[option].name}
             </Text>

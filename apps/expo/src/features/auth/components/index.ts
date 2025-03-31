@@ -1,1 +1,1 @@
-export * from './social-auth';
+export * from './social-auth-buttons';
