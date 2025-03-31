@@ -1,6 +1,6 @@
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 
-export default function SignInScreen() {
+export default function DashboardScreen() {
   return (
     <View
       style={{
@@ -9,7 +9,9 @@ export default function SignInScreen() {
         alignItems: 'center',
       }}
     >
-      <View></View>
+      <View>
+        <Text>Dashboard</Text>
+      </View>
     </View>
   );
 }

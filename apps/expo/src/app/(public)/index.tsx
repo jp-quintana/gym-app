@@ -18,7 +18,7 @@ export default function Index() {
         className="flex-1"
         onLoad={() => setHasImageLoaded(true)}
       >
-        <SafeAreaView className="p-5 flex-1 justify-center">
+        <SafeAreaView className="p-5 flex-1">
           <View className="mt-auto gap-3">
             <SocialAuthButtons
               options={['google']}
@@ -34,7 +34,7 @@ export default function Index() {
             <Text className="text-white text-center">
               Already have an account?{' '}
               <Link href="/sign-in">
-                <Text className="text-cyan-500">Log in</Text>
+                <Text className="text-cyan-600">Log in</Text>
               </Link>
             </Text>
           </View>
