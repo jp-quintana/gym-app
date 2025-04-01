@@ -2,16 +2,15 @@ import { useForm } from '@/hooks';
 import { Input } from '@/types';
 import { z } from 'zod';
 
-export interface IUseSignIn {
+export interface IUseSignUp {
   inputs: Input[];
-  schema: z.ZodObject<any>;
+  schema: z.ZodEffects<z.ZodObject<any>>;
 }
 
-export const useSignIn = ({ inputs, schema }: IUseSignIn) => {
+export const UseSignUp = ({ inputs, schema }: IUseSignUp) => {
   const {
     control,
     secureFormState,
-    isFormValid,
     error,
     handleSubmit,
     handleSecureInputChange,
@@ -21,7 +20,7 @@ export const useSignIn = ({ inputs, schema }: IUseSignIn) => {
   const handleFormSubmit = handleSubmit(
     async (data: z.infer<typeof schema>) => {
       try {
-        console.log('Submit sign in');
+        console.log('Submit sign up');
       } catch (error: any) {
         // setError('email', {
         //   type: 'manual',
@@ -34,7 +33,6 @@ export const useSignIn = ({ inputs, schema }: IUseSignIn) => {
   return {
     control,
     secureFormState,
-    isFormValid,
     error,
     handleFormSubmit,
     handleSecureInputChange,

@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 export interface IUseForm {
   inputs: Input[];
-  schema: z.ZodObject<any>;
+  schema: z.ZodObject<any> | z.ZodEffects<z.ZodObject<any>>;
 }
 
 export const useForm = ({ inputs, schema }: IUseForm) => {

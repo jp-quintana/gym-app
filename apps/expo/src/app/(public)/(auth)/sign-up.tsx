@@ -1,15 +1,10 @@
+import { SignUpForm } from '@/features/auth/components';
 import { View } from 'react-native';
 
 export default function SignUpScreen() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <View></View>
+    <View className="flex-1 p-5">
+      <SignUpForm />
     </View>
   );
 }

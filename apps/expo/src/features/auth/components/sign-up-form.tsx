@@ -1,24 +1,23 @@
 import { View } from 'react-native';
-import { SIGN_IN_INPUTS } from '../utils/constants';
-import { signInSchema } from '../utils/schemas';
-import { useSignIn } from '../hooks';
+import { SIGN_UP_INPUTS } from '../utils/constants';
+import { signUpSchema } from '../utils/schemas';
+import { UseSignUp } from '../hooks';
 import { FormItem } from './form-item';
 import { Button, Text } from '@/components/ui';
 
-export const SignInForm = () => {
+export const SignUpForm = () => {
   const {
     control,
     secureFormState,
-    isFormValid,
     error,
     handleFormSubmit,
     handleSecureInputChange,
-  } = useSignIn({ inputs: SIGN_IN_INPUTS, schema: signInSchema });
+  } = UseSignUp({ inputs: SIGN_UP_INPUTS, schema: signUpSchema });
 
   return (
     <View>
       <View className="gap-3">
-        {SIGN_IN_INPUTS.map((input) => (
+        {SIGN_UP_INPUTS.map((input) => (
           <FormItem
             key={input.name}
             input={input}
@@ -28,16 +27,14 @@ export const SignInForm = () => {
           />
         ))}
       </View>
-      <Text className="mt-3 text-center text-cyan-600">Forgot Password?</Text>
       <View className="mt-6 gap-3">
         {error && (
           <Text className="text-red-600 px-1 font-bold">
             {error.message?.toString()}
           </Text>
         )}
-
-        <Button onPress={handleFormSubmit} disabled={!isFormValid}>
-          <Text>Sign in</Text>
+        <Button onPress={handleFormSubmit}>
+          <Text>Sign Up</Text>
         </Button>
       </View>
     </View>
