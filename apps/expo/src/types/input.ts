@@ -5,5 +5,5 @@ export type Input = {
   placeholder?: string;
   type: string;
   label?: string;
-  validation: z.ZodString;
+  validation: z.ZodTypeAny;
 };

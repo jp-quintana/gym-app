@@ -10,13 +10,17 @@ export interface IUseForm {
 }
 
 export const useForm = ({ inputs, schema }: IUseForm) => {
-  const initialFormState: { [key: string]: string } = {};
+  const initialFormState: { [key: string]: string | boolean } = {};
   const initialSecureFormState: { [key: string]: boolean } = {};
 
   inputs.forEach((input) => {
-    initialFormState[input.name] = '';
-    if (input.type === 'password') {
-      initialSecureFormState[input.name] = true;
+    if (input.type === 'checkbox') {
+      initialFormState[input.name] = false;
+    } else {
+      initialFormState[input.name] = '';
+      if (input.type === 'password') {
+        initialSecureFormState[input.name] = true;
+      }
     }
   });
 

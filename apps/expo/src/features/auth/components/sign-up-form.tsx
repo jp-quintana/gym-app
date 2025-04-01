@@ -23,6 +23,15 @@ export const SignUpForm = () => {
             input={input}
             control={control}
             secureTextEntry={secureFormState[input.name]}
+            customLabel={
+              input.type === 'checkbox' ? (
+                <Text>
+                  I accept the{' '}
+                  <Text className="text-cyan-600">terms & conditions</Text> and
+                  the <Text className="text-cyan-600">privacy policy</Text>
+                </Text>
+              ) : undefined
+            }
             handleSecureInputChange={handleSecureInputChange}
           />
         ))}

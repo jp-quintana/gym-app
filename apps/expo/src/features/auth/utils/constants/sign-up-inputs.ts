@@ -38,4 +38,11 @@ export const SIGN_UP_INPUTS = [
     label: 'Confirm password',
     validation: z.string().min(1, { message: 'Confirm password is empty' }),
   },
+  {
+    name: 'tos',
+    type: 'checkbox',
+    validation: z.boolean().refine((val) => val, {
+      message: 'You must agree to the terms & conditions',
+    }),
+  },
 ];
