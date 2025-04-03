@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
-export type Input = {
+export interface IInput {
   name: string;
   placeholder?: string;
   type: string;
   label?: string;
-  validation: z.ZodTypeAny;
-};
+  validation: z.ZodSchema;
+}

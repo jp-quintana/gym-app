@@ -1,15 +1,11 @@
+import { IInput } from '@/types';
 import { z } from 'zod';
 
-type SchemaField = {
-  name: string;
-  validation: z.ZodTypeAny;
-};
-
-export function getSchemaObject<T extends readonly SchemaField[]>(inputs: T) {
+export function getSchemaObject(inputs: IInput[]) {
   return z.object(
     inputs.reduce((acc, { name, validation }) => {
       acc[name as keyof typeof acc] = validation;
       return acc;
-    }, {} as Record<T[number]['name'], T[number]['validation']>)
+    }, {} as Record<(typeof inputs)[number]['name'], (typeof inputs)[number]['validation']>)
   );
 }

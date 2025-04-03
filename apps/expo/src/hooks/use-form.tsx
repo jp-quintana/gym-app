@@ -1,12 +1,14 @@
-import { Input } from '@/types';
 import { useState } from 'react';
 import { z } from 'zod';
 import { useForm as uf } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { IInput } from '@/types';
 
 export interface IUseForm {
-  inputs: Input[];
-  schema: z.ZodObject<any> | z.ZodEffects<z.ZodObject<any>>;
+  inputs: IInput[];
+  // schema: z.ZodObject<any> | z.ZodEffects<z.ZodObject<any>>;
+  // schema: z.ZodTypeAny;
+  schema: z.ZodSchema;
 }
 
 export const useForm = ({ inputs, schema }: IUseForm) => {

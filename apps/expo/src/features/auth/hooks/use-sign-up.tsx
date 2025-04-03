@@ -1,10 +1,10 @@
 import { useForm } from '@/hooks';
-import { Input } from '@/types';
+import { IInput } from '@/types';
 import { z } from 'zod';
 
 export interface IUseSignUp {
-  inputs: Input[];
-  schema: z.ZodEffects<z.ZodObject<any>>;
+  inputs: IInput[];
+  schema: z.ZodSchema;
 }
 
 export const UseSignUp = ({ inputs, schema }: IUseSignUp) => {

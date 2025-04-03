@@ -1,10 +1,10 @@
 import { Checkbox, Input, Text } from '@/components/ui';
-import { Input as TInput } from '@/types';
+import { IInput } from '@/types';
 import { Control, Controller } from 'react-hook-form';
 import { View } from 'react-native';
 
 export interface IFormItem {
-  input: TInput;
+  input: IInput;
   control: Control<any>;
   secureTextEntry?: boolean;
   customLabel?: React.JSX.Element;
