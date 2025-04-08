@@ -109,7 +109,7 @@ export class AuthService {
     );
 
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException('Invalid credentials.');
     }
 
     const payload = { userId: user.id, email: user.email };
@@ -146,11 +146,11 @@ export class AuthService {
     });
 
     if (!authSession) {
-      throw new UnauthorizedException('No active session found');
+      throw new UnauthorizedException('No active session found.');
     }
 
     if (authSession.expiresAt < new Date()) {
-      throw new UnauthorizedException('Refresh token expired');
+      throw new UnauthorizedException('Refresh token expired.');
     }
 
     const payload = { userId: user.id, email: user.email };
@@ -182,7 +182,7 @@ export class AuthService {
       });
     } catch (error: any) {
       console.error('Error during refresh:', error);
-      throw new BadRequestException('Failed to refresh tokens');
+      throw new BadRequestException('Failed to refresh tokens.');
     }
   }
 }

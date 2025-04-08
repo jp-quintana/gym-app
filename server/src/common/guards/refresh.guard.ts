@@ -19,7 +19,7 @@ export class RefreshGuard implements CanActivate {
     const token = this.extractToken(request);
 
     if (!token) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('No refresh token provided.');
     }
 
     try {
@@ -29,7 +29,7 @@ export class RefreshGuard implements CanActivate {
 
       request['user'] = { ...payload, refreshToken: token };
     } catch {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('Unauthorized to access.');
     }
     return true;
   }

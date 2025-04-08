@@ -25,7 +25,7 @@ export class ApiKeyGuard implements CanActivate {
         : 'my-api-key';
 
     if (apiKeyHeader !== apiKey)
-      throw new UnauthorizedException('Unauthorized to access');
+      throw new UnauthorizedException('Unauthorized to access.');
 
     return true;
   }

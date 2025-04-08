@@ -16,12 +16,20 @@ export class UserService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    const existingUser = await this.userRepository.findOne({
+    const existingUserByUsername = await this.userRepository.findOne({
+      where: { username: createUserDto.username },
+    });
+
+    if (existingUserByUsername) {
+      throw new ConflictException('A user with this username already exists.');
+    }
+
+    const existingUserByEmail = await this.userRepository.findOne({
       where: { email: createUserDto.email },
     });
 
-    if (existingUser) {
-      throw new ConflictException('A user with this email already exists');
+    if (existingUserByEmail) {
+      throw new ConflictException('A user with this email already exists.');
     }
 
     return this.userRepository.save(createUserDto);
@@ -30,7 +38,7 @@ export class UserService {
   async findOneByEmail(email: string) {
     const user = await this.userRepository.findOne({ where: { email } });
 
-    if (!user || user.deleted) throw new NotFoundException('User not found');
+    if (!user || user.deleted) throw new NotFoundException('User not found.');
 
     return user;
   }
@@ -38,7 +46,7 @@ export class UserService {
   async findOneById(id: string) {
     const user = await this.userRepository.findOne({ where: { id } });
 
-    if (!user || user.deleted) throw new NotFoundException('User not found');
+    if (!user || user.deleted) throw new NotFoundException('User not found.');
 
     return user;
   }
@@ -46,7 +54,7 @@ export class UserService {
   async deleteOneByEmail(email: string) {
     let user = await this.userRepository.findOne({ where: { email } });
 
-    if (!user || user.deleted) throw new NotFoundException('User not found');
+    if (!user || user.deleted) throw new NotFoundException('User not found.');
 
     user.deleted = true;
 
@@ -56,7 +64,7 @@ export class UserService {
   async deleteOneById(id: string) {
     let user = await this.userRepository.findOne({ where: { id } });
 
-    if (!user || user.deleted) throw new NotFoundException('User not found');
+    if (!user || user.deleted) throw new NotFoundException('User not found.');
 
     user.deleted = true;
 

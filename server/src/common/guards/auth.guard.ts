@@ -20,7 +20,7 @@ export class AuthGuard implements CanActivate {
     const token = this.extractToken(request);
 
     if (!token) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('No access token provided.');
     }
     try {
       const payload = await this.jwtService.verifyAsync(token, {
@@ -29,7 +29,7 @@ export class AuthGuard implements CanActivate {
 
       request['user'] = payload;
     } catch {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('Unauthorized to access.');
     }
     return true;
   }
