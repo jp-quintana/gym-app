@@ -6,22 +6,22 @@ import {
 import { LoginUserDto } from './dtos';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
-import { CreateUserDto } from 'src/common/dtos';
 
 import * as bcrypt from 'bcrypt';
-import { JwtPayload, UserRequest } from 'src/common/interfaces';
+import { IJwtPayload, IUserRequest } from 'src/common/interfaces';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuthSession } from './entities';
 import { Repository } from 'typeorm';
-import { AuthTokens } from './interfaces';
+import { IAuthTokens } from './types';
 import { Response } from 'express';
+import { CreateUserDto } from '../user/dtos';
 
 // TODO: set cookie and add isMobile flag to request body to adjust response based on request device
 @Injectable()
 export class AuthService {
-  private generateAccessToken: (payload: JwtPayload) => string;
-  private generateTokens: (payload: JwtPayload) => AuthTokens;
+  private generateAccessToken: (payload: IJwtPayload) => string;
+  private generateTokens: (payload: IJwtPayload) => IAuthTokens;
   private setTokensInCookie: (
     accessToken: string,
     refreshToken: string,
@@ -35,13 +35,13 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
   ) {
-    this.generateAccessToken = (payload: JwtPayload) => {
+    this.generateAccessToken = (payload: IJwtPayload) => {
       return this.jwtService.sign(payload, {
         secret: this.configService.get<string>('accessTokenSecret'),
         expiresIn: this.configService.get<string>('accessTokenTtl'),
       });
     };
-    this.generateTokens = (payload: JwtPayload) => {
+    this.generateTokens = (payload: IJwtPayload) => {
       const accessToken = this.jwtService.sign(payload, {
         secret: this.configService.get<string>('accessTokenSecret'),
         expiresIn: this.configService.get<string>('accessTokenTtl'),
@@ -138,7 +138,7 @@ export class AuthService {
   }
 
   // TODO: test
-  async refresh(req: UserRequest, res: Response) {
+  async refresh(req: IUserRequest, res: Response) {
     const user = await this.usersService.findOneByEmail(req.user.userId);
 
     let authSession = await this.authSessionRepository.findOne({
