@@ -4,9 +4,11 @@ import { signUpSchema } from '../utils/schemas';
 import { UseSignUp } from '../hooks';
 import { FormItem } from './form-item';
 import { Button, Text } from '@/components/ui';
+import { Spinner } from '@/components';
 
 export const SignUpForm = () => {
   const {
+    isPending,
     control,
     secureFormState,
     error,
@@ -42,8 +44,15 @@ export const SignUpForm = () => {
             {error.message?.toString()}
           </Text>
         )}
-        <Button onPress={handleFormSubmit}>
-          <Text>Sign Up</Text>
+        <Button
+          onPress={handleFormSubmit}
+          className="flex-row"
+          disabled={isPending}
+        >
+          <View>
+            <Text>Sign Up</Text>
+            {isPending && <Spinner />}
+          </View>
         </Button>
       </View>
     </View>

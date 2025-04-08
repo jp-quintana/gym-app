@@ -1,6 +1,8 @@
 import { useForm } from '@/hooks';
 import { IInput } from '@/types';
+import { useMutation } from '@tanstack/react-query';
 import { z } from 'zod';
+import { signUp } from '../services';
 
 export interface IUseSignUp {
   inputs: IInput[];
@@ -17,20 +19,35 @@ export const UseSignUp = ({ inputs, schema }: IUseSignUp) => {
     setError,
   } = useForm({ inputs, schema });
 
+  const { mutate, isPending } = useMutation({
+    mutationFn: signUp,
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (error: any) => {
+      if (error?.message) {
+        setError('server', {
+          type: 'server',
+          message: error.message,
+        });
+      } else {
+        setError('server', {
+          type: 'server',
+          message: 'Something went wrong.',
+        });
+      }
+    },
+  });
+
   const handleFormSubmit = handleSubmit(
     async (data: z.infer<typeof schema>) => {
-      try {
-        console.log('Submit sign up');
-      } catch (error: any) {
-        // setError('email', {
-        //   type: 'manual',
-        //   message,
-        // });
-      }
+      const { tos, ...signUpDto } = data;
+      mutate(signUpDto);
     }
   );
 
   return {
+    isPending,
     control,
     secureFormState,
     error,

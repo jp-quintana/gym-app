@@ -24,19 +24,16 @@ export const useSignIn = ({ inputs, schema }: IUseSignIn) => {
     mutationFn: signIn,
     onSuccess: (data) => {
       console.log(data);
-      // console.log('Sign in successful:', data);
     },
     onError: (error: any) => {
-      console.log(error);
-      // console.error('Sign in failed:', error);
-      // if (error?.response?.data?.message) {
-      //   setError('email', {
-      //     type: 'manual',
-      //     message: error.response.data.message,
-      //   });
-      // } else {
-      //   setError('email', { type: 'manual', message: 'Sign in failed.' });
-      // }
+      if (error?.message) {
+        setError('email', {
+          type: 'manual',
+          message: error.message,
+        });
+      } else {
+        setError('email', { type: 'manual', message: 'Something went wrong.' });
+      }
     },
   });
 
@@ -47,10 +44,10 @@ export const useSignIn = ({ inputs, schema }: IUseSignIn) => {
   );
 
   return {
+    isPending,
     control,
     secureFormState,
     isFormValid,
-    isPending,
     error,
     handleFormSubmit,
     handleSecureInputChange,

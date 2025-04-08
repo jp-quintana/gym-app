@@ -1,5 +1,5 @@
 import { api } from '@/api';
-import { ISignIn, ISignInResponse } from '../types';
+import { ISignIn, ISignInResponse, ISignUp, ISignUpResponse } from '../types';
 
 export const signIn = async (data: ISignIn): Promise<ISignInResponse> => {
   try {
@@ -14,9 +14,9 @@ export const signIn = async (data: ISignIn): Promise<ISignInResponse> => {
   }
 };
 
-export const signUp = async (data: ISignIn): Promise<ISignInResponse> => {
+export const signUp = async (data: ISignUp): Promise<ISignUpResponse> => {
   try {
-    const response = await api.post('/auth/login', data);
+    const response = await api.post('/auth/register', data);
     return response.data;
   } catch (error: any) {
     console.error('Error in sign in service', error);
