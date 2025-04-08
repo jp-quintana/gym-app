@@ -43,8 +43,8 @@ export const SocialAuthButtons = ({
           onPress={socialAuthOptions[option].onPress}
           className={buttonClassName}
         >
-          <View className="w-full justify-center">
-            <View className="absolute left-0 top-0 bottom-0">
+          <View className="w-full">
+            <View className="absolute left-0 top-0 bottom-0 pt-0.5">
               {cloneElement(socialAuthOptions[option].icon, {
                 fill: iFill,
               })}
