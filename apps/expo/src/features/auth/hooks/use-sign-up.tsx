@@ -14,6 +14,7 @@ export const UseSignUp = ({ inputs, schema }: IUseSignUp) => {
     control,
     secureFormState,
     error,
+    clearErrors,
     handleSubmit,
     handleSecureInputChange,
     setError,
@@ -51,6 +52,7 @@ export const UseSignUp = ({ inputs, schema }: IUseSignUp) => {
     control,
     secureFormState,
     error,
+    clearErrors,
     handleFormSubmit,
     handleSecureInputChange,
   };

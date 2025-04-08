@@ -11,6 +11,7 @@ export const SignInForm = () => {
     secureFormState,
     isFormValid,
     error,
+    clearErrors,
     handleFormSubmit,
     handleSecureInputChange,
   } = useSignIn({ inputs: SIGN_IN_INPUTS, schema: signInSchema });
@@ -24,6 +25,7 @@ export const SignInForm = () => {
             input={input}
             control={control}
             secureTextEntry={secureFormState[input.name]}
+            clearErrors={clearErrors}
             handleSecureInputChange={handleSecureInputChange}
           />
         ))}

@@ -12,6 +12,7 @@ export const SignUpForm = () => {
     control,
     secureFormState,
     error,
+    clearErrors,
     handleFormSubmit,
     handleSecureInputChange,
   } = UseSignUp({ inputs: SIGN_UP_INPUTS, schema: signUpSchema });
@@ -34,6 +35,7 @@ export const SignUpForm = () => {
                 </Text>
               ) : undefined
             }
+            clearErrors={clearErrors}
             handleSecureInputChange={handleSecureInputChange}
           />
         ))}

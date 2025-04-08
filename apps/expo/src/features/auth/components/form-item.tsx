@@ -1,6 +1,6 @@
 import { Checkbox, Input, Text } from '@/components/ui';
 import { IInput } from '@/types';
-import { Control, Controller } from 'react-hook-form';
+import { Control, Controller, UseFormClearErrors } from 'react-hook-form';
 import { View } from 'react-native';
 
 export interface IFormItem {
@@ -8,6 +8,7 @@ export interface IFormItem {
   control: Control<any>;
   secureTextEntry?: boolean;
   customLabel?: React.JSX.Element;
+  clearErrors: UseFormClearErrors<any>;
   handleSecureInputChange?: (key: string) => void;
 }
 
@@ -16,6 +17,7 @@ export const FormItem = ({
   control,
   secureTextEntry,
   customLabel,
+  clearErrors,
   handleSecureInputChange,
 }: IFormItem) => {
   if (input.type === 'checkbox') {
@@ -25,7 +27,13 @@ export const FormItem = ({
           control={control}
           name={input.name}
           render={({ field: { onChange, value } }) => (
-            <Checkbox checked={value} onCheckedChange={onChange} />
+            <Checkbox
+              checked={value}
+              onCheckedChange={(val) => {
+                clearErrors('server');
+                onChange(val);
+              }}
+            />
           )}
         />
         {customLabel}
@@ -47,7 +55,10 @@ export const FormItem = ({
           <Input
             {...input}
             value={value}
-            onChangeText={onChange}
+            onChangeText={(val) => {
+              clearErrors('server');
+              onChange(val);
+            }}
             secureTextEntry={secureTextEntry}
           />
         )}

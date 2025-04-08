@@ -15,6 +15,7 @@ export const useSignIn = ({ inputs, schema }: IUseSignIn) => {
     secureFormState,
     isFormValid,
     error,
+    clearErrors,
     handleSubmit,
     handleSecureInputChange,
     setError,
@@ -27,12 +28,15 @@ export const useSignIn = ({ inputs, schema }: IUseSignIn) => {
     },
     onError: (error: any) => {
       if (error?.message) {
-        setError('email', {
-          type: 'manual',
+        setError('server', {
+          type: 'server',
           message: error.message,
         });
       } else {
-        setError('email', { type: 'manual', message: 'Something went wrong.' });
+        setError('server', {
+          type: 'server',
+          message: 'Something went wrong.',
+        });
       }
     },
   });
@@ -49,6 +53,7 @@ export const useSignIn = ({ inputs, schema }: IUseSignIn) => {
     secureFormState,
     isFormValid,
     error,
+    clearErrors,
     handleFormSubmit,
     handleSecureInputChange,
   };
