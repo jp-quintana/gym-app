@@ -2,6 +2,7 @@ import { useForm } from '@/hooks';
 import { IInput } from '@/types';
 import { z } from 'zod';
 import { signIn } from '../services';
+import { useMutation } from '@tanstack/react-query';
 
 export interface IUseSignIn {
   inputs: IInput[];
@@ -19,17 +20,29 @@ export const useSignIn = ({ inputs, schema }: IUseSignIn) => {
     setError,
   } = useForm({ inputs, schema });
 
+  const { mutate, isPending } = useMutation({
+    mutationFn: signIn,
+    onSuccess: (data) => {
+      console.log(data);
+      // console.log('Sign in successful:', data);
+    },
+    onError: (error: any) => {
+      console.log(error);
+      // console.error('Sign in failed:', error);
+      // if (error?.response?.data?.message) {
+      //   setError('email', {
+      //     type: 'manual',
+      //     message: error.response.data.message,
+      //   });
+      // } else {
+      //   setError('email', { type: 'manual', message: 'Sign in failed.' });
+      // }
+    },
+  });
+
   const handleFormSubmit = handleSubmit(
     async (data: z.infer<typeof schema>) => {
-      try {
-        const response = await signIn(data);
-        console.log('Submit sign in');
-      } catch (error: any) {
-        // setError('email', {
-        //   type: 'manual',
-        //   message,
-        // });
-      }
+      mutate(data);
     }
   );
 
@@ -37,6 +50,7 @@ export const useSignIn = ({ inputs, schema }: IUseSignIn) => {
     control,
     secureFormState,
     isFormValid,
+    isPending,
     error,
     handleFormSubmit,
     handleSecureInputChange,
