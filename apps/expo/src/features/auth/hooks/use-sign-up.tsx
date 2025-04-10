@@ -9,7 +9,7 @@ export interface IUseSignUp {
   schema: z.ZodSchema;
 }
 
-export const UseSignUp = ({ inputs, schema }: IUseSignUp) => {
+export const useSignUp = ({ inputs, schema }: IUseSignUp) => {
   const {
     control,
     secureFormState,

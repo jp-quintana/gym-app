@@ -1,7 +1,7 @@
 import { View } from 'react-native';
 import { SIGN_UP_INPUTS } from '../utils/constants';
 import { signUpSchema } from '../utils/schemas';
-import { UseSignUp } from '../hooks';
+import { useSignUp } from '../hooks';
 import { FormItem } from './form-item';
 import { Button, Text } from '@/components/ui';
 import { Spinner } from '@/components';
@@ -15,7 +15,7 @@ export const SignUpForm = () => {
     clearErrors,
     handleFormSubmit,
     handleSecureInputChange,
-  } = UseSignUp({ inputs: SIGN_UP_INPUTS, schema: signUpSchema });
+  } = useSignUp({ inputs: SIGN_UP_INPUTS, schema: signUpSchema });
 
   return (
     <View>
