@@ -2,8 +2,8 @@ import { View } from 'react-native';
 import { SIGN_IN_INPUTS } from '../utils/constants';
 import { signInSchema } from '../utils/schemas';
 import { useSignIn } from '../hooks';
-import { FormItem } from './form-item';
 import { Button, Text } from '@/components/ui';
+import { FormItem } from '@/components';
 
 export const SignInForm = () => {
   const {

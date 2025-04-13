@@ -2,9 +2,8 @@ import { View } from 'react-native';
 import { SIGN_UP_INPUTS } from '../utils/constants';
 import { signUpSchema } from '../utils/schemas';
 import { useSignUp } from '../hooks';
-import { FormItem } from './form-item';
 import { Button, Text } from '@/components/ui';
-import { Spinner } from '@/components';
+import { FormItem, Spinner } from '@/components';
 
 export const SignUpForm = () => {
   const {
