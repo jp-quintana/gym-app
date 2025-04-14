@@ -10,10 +10,20 @@ import { Request } from 'express';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
+  private extractToken: (request: Request) => string | undefined;
+
   constructor(
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
-  ) {}
+  ) {
+    this.extractToken = (request) => {
+      if (request.cookies.accessToken)
+        return request.cookies.accessToken as string;
+
+      const [type, token] = request.headers.authorization?.split(' ') ?? [];
+      return type === 'Bearer' ? token : undefined;
+    };
+  }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
@@ -32,13 +42,5 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException('Unauthorized to access.');
     }
     return true;
-  }
-
-  private extractToken(request: Request): string | undefined {
-    if (request.cookies.accessToken)
-      return request.cookies.accessToken as string;
-
-    const [type, token] = request.headers.authorization?.split(' ') ?? [];
-    return type === 'Bearer' ? token : undefined;
   }
 }

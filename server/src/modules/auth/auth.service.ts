@@ -20,13 +20,7 @@ import { CreateUserDto } from '../user/dtos';
 // TODO: set cookie and add isMobile flag to request body to adjust response based on request device
 @Injectable()
 export class AuthService {
-  private generateAccessToken: (payload: IJwtPayload) => string;
   private generateTokens: (payload: IJwtPayload) => IAuthTokens;
-  private setTokensInCookie: (
-    accessToken: string,
-    refreshToken: string,
-    res: Response,
-  ) => void;
 
   constructor(
     @InjectRepository(AuthSession)
@@ -35,13 +29,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
   ) {
-    this.generateAccessToken = (payload: IJwtPayload) => {
-      return this.jwtService.sign(payload, {
-        secret: this.configService.get<string>('accessTokenSecret'),
-        expiresIn: this.configService.get<string>('accessTokenTtl'),
-      });
-    };
-    this.generateTokens = (payload: IJwtPayload) => {
+    this.generateTokens = (payload) => {
       const accessToken = this.jwtService.sign(payload, {
         secret: this.configService.get<string>('accessTokenSecret'),
         expiresIn: this.configService.get<string>('accessTokenTtl'),
@@ -66,24 +54,6 @@ export class AuthService {
         refreshTokenExpiresAt: new Date(refreshExp * 1000),
       };
     };
-    this.setTokensInCookie = (
-      accessToken: string,
-      refreshToken: string,
-      res: Response,
-    ) => {
-      res.cookie('accessToken', accessToken, {
-        httpOnly: true,
-        secure: this.configService.get<string>('nodeEnv') === 'production',
-        sameSite: 'strict',
-        maxAge: this.configService.get<number>('accessCookieTtl'),
-      });
-      res.cookie('refreshToken', refreshToken, {
-        httpOnly: true,
-        secure: this.configService.get<string>('nodeEnv') === 'production',
-        sameSite: 'strict',
-        maxAge: this.configService.get<number>('refreshCookieTtl'),
-      });
-    };
   }
 
   async register(createUserDto: CreateUserDto) {
@@ -95,12 +65,28 @@ export class AuthService {
 
     const payload = { userId: user.id, email: user.email };
 
+    const {
+      accessToken,
+      refreshToken,
+      accessTokenExpiresAt,
+      refreshTokenExpiresAt,
+    } = this.generateTokens(payload);
+
+    await this.authSessionRepository.save({
+      refreshToken,
+      expiresAt: refreshTokenExpiresAt,
+      userId: user.id,
+    });
+
     return {
-      accessToken: this.generateAccessToken(payload),
+      accessToken,
+      refreshToken,
+      accessTokenExpiresAt,
+      refreshTokenExpiresAt,
     };
   }
 
-  async login(loginUserDto: LoginUserDto, res: Response) {
+  async login(loginUserDto: LoginUserDto) {
     const user = await this.usersService.findOneByEmail(loginUserDto.email);
 
     const isPasswordValid = await bcrypt.compare(
@@ -127,22 +113,19 @@ export class AuthService {
       userId: user.id,
     });
 
-    this.setTokensInCookie(accessToken, refreshToken, res);
-
-    res.send({
+    return {
       accessToken,
       refreshToken,
       accessTokenExpiresAt,
       refreshTokenExpiresAt,
-    });
+    };
   }
 
-  // TODO: test
-  async refresh(req: IUserRequest, res: Response) {
-    const user = await this.usersService.findOneByEmail(req.user.userId);
+  async refresh(userId: string, oldRefreshToken: string) {
+    const user = await this.usersService.findOneByEmail(userId);
 
     let authSession = await this.authSessionRepository.findOne({
-      where: { refreshToken: req.user?.refreshToken, deleted: false },
+      where: { refreshToken: oldRefreshToken, deleted: false },
     });
 
     if (!authSession) {
@@ -172,14 +155,12 @@ export class AuthService {
         userId: user.id,
       });
 
-      this.setTokensInCookie(accessToken, refreshToken, res);
-
-      res.send({
+      return {
         accessToken,
         refreshToken,
         accessTokenExpiresAt,
         refreshTokenExpiresAt,
-      });
+      };
     } catch (error: any) {
       console.error('Error during refresh:', error);
       throw new BadRequestException('Failed to refresh tokens.');

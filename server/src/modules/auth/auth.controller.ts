@@ -5,24 +5,64 @@ import { Response } from 'express';
 import { IUserRequest } from 'src/common/interfaces';
 import { RefreshGuard } from 'src/common/guards';
 import { CreateUserDto } from '../user/dtos';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  private setTokensInCookie: (
+    accessToken: string,
+    refreshToken: string,
+    res: Response,
+  ) => void;
+
+  constructor(
+    private readonly authService: AuthService,
+    private readonly configService: ConfigService,
+  ) {
+    this.setTokensInCookie = (accessToken, refreshToken, res) => {
+      res.cookie('accessToken', accessToken, {
+        httpOnly: true,
+        secure: this.configService.get<string>('nodeEnv') === 'production',
+        sameSite: 'strict',
+        maxAge: this.configService.get<number>('accessCookieTtl'),
+      });
+      res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        secure: this.configService.get<string>('nodeEnv') === 'production',
+        sameSite: 'strict',
+        maxAge: this.configService.get<number>('refreshCookieTtl'),
+      });
+    };
+  }
 
   @Post('register')
-  register(@Body() createUserDto: CreateUserDto) {
-    return this.authService.register(createUserDto);
+  async register(@Body() createUserDto: CreateUserDto, @Res() res: Response) {
+    const payload = await this.authService.register(createUserDto);
+
+    this.setTokensInCookie(payload.accessToken, payload.refreshToken, res);
+
+    return res.send(payload);
   }
 
   @Post('login')
-  login(@Body() loginUserDto: LoginUserDto, @Res() res: Response) {
-    return this.authService.login(loginUserDto, res);
+  async login(@Body() loginUserDto: LoginUserDto, @Res() res: Response) {
+    const payload = await this.authService.login(loginUserDto);
+
+    this.setTokensInCookie(payload.accessToken, payload.refreshToken, res);
+
+    return res.send(payload);
   }
 
   @Post('refresh')
   @UseGuards(RefreshGuard)
-  refresh(@Req() req: IUserRequest, @Res() res: Response) {
-    return this.authService.refresh(req, res);
+  async refresh(@Req() req: IUserRequest, @Res() res: Response) {
+    const payload = await this.authService.refresh(
+      req.user.userId,
+      req.user.refreshToken,
+    );
+
+    this.setTokensInCookie(payload.accessToken, payload.refreshToken, res);
+
+    return res.send(payload);
   }
 }

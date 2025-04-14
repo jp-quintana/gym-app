@@ -10,10 +10,19 @@ import { Request } from 'express';
 
 @Injectable()
 export class RefreshGuard implements CanActivate {
+  private extractToken: (request: Request) => string | undefined;
+
   constructor(
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
-  ) {}
+  ) {
+    this.extractToken = (request) => {
+      if (request.cookies.refreshToken)
+        return request.cookies.refreshToken as string;
+      const [type, token] = request.headers.authorization?.split(' ') ?? [];
+      return type === 'Bearer' ? token : undefined;
+    };
+  }
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const token = this.extractToken(request);
@@ -32,12 +41,5 @@ export class RefreshGuard implements CanActivate {
       throw new UnauthorizedException('Unauthorized to access.');
     }
     return true;
-  }
-
-  private extractToken(request: Request): string | undefined {
-    if (request.cookies.refreshToken)
-      return request.cookies.refreshToken as string;
-    const [type, token] = request.headers.authorization?.split(' ') ?? [];
-    return type === 'Bearer' ? token : undefined;
   }
 }
