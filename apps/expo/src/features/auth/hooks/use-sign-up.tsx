@@ -3,6 +3,7 @@ import { IInput } from '@/types';
 import { useMutation } from '@tanstack/react-query';
 import { z } from 'zod';
 import { signUp } from '../services';
+import { useAuthStore } from '@/stores';
 
 export interface IUseSignUp {
   inputs: IInput[];
@@ -10,6 +11,8 @@ export interface IUseSignUp {
 }
 
 export const useSignUp = ({ inputs, schema }: IUseSignUp) => {
+  const { setTokens } = useAuthStore((state) => state);
+
   const {
     control,
     secureFormState,
@@ -23,7 +26,8 @@ export const useSignUp = ({ inputs, schema }: IUseSignUp) => {
   const { mutate, isPending } = useMutation({
     mutationFn: signUp,
     onSuccess: (data) => {
-      console.log(data);
+      console.log({ data });
+      setTokens(data);
     },
     onError: (error: any) => {
       if (error?.message) {

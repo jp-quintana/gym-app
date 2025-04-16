@@ -6,4 +6,9 @@ export interface ISignUp {
   role?: string;
 }
 
-export interface ISignUpResponse {}
+export interface ISignUpResponse {
+  accessToken: string;
+  refreshToken: string;
+  accessTokenExpiresAt: Date;
+  refreshTokenExpiresAt: Date;
+}

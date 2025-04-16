@@ -25,7 +25,6 @@ api.interceptors.request.use(
   }
 );
 
-// TODO: check refresh token expire logic in server
 api.interceptors.response.use(
   (response) => response,
   async (responseError) => {

@@ -1,22 +1,28 @@
 import { create } from 'zustand';
-import { createJSONStorage, persist } from 'zustand/middleware';
-import { asyncStorage } from './async';
 
 interface AuthState {
   accessToken: string | null;
   refreshToken: string | null;
-  setTokens: (tokens: { accessToken: string; refreshToken: string }) => void;
+  accessTokenExpiresAt: Date | null;
+  refreshTokenExpiresAt: Date | null;
+  setTokens: (tokens: {
+    accessToken: string;
+    refreshToken: string;
+    accessTokenExpiresAt: Date;
+    refreshTokenExpiresAt: Date;
+  }) => void;
   clearTokens: () => void;
 }
 
-export const useAuthStore = create<AuthState>()(
-  persist(
-    (set, get) => ({
-      accessToken: null,
-      refreshToken: null,
-      setTokens: (tokens) => set(tokens),
-      clearTokens: () => set({ accessToken: null, refreshToken: null }),
-    }),
-    { name: 'auth-storage', storage: createJSONStorage(() => asyncStorage) }
-  )
-);
+const initialState = {
+  accessToken: null,
+  refreshToken: null,
+  accessTokenExpiresAt: null,
+  refreshTokenExpiresAt: null,
+};
+
+export const useAuthStore = create<AuthState>((set) => ({
+  ...initialState,
+  setTokens: (payload) => set(payload),
+  clearTokens: () => set(initialState),
+}));

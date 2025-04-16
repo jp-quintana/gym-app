@@ -52,7 +52,7 @@ export const SignUpForm = () => {
         >
           <View>
             <Text>Sign Up</Text>
-            {isPending && <Spinner />}
+            {/* {isPending && <Spinner />} */}
           </View>
         </Button>
       </View>

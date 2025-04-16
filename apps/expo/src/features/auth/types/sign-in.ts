@@ -6,4 +6,6 @@ export interface ISignIn {
 export interface ISignInResponse {
   accessToken: string;
   refreshToken: string;
+  accessTokenExpiresAt: Date;
+  refreshTokenExpiresAt: Date;
 }
