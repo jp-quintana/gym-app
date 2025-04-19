@@ -30,8 +30,7 @@ api.interceptors.response.use(
   async (responseError) => {
     const originalRequest = responseError.config;
     const { message, statusCode } = responseError.response.data;
-    const isRefreshRequest =
-      originalRequest?.url === `${baseURL}/auth/mobile-refresh`;
+    const isRefreshRequest = originalRequest?.url === `${baseURL}/auth/refresh`;
 
     if (statusCode === 401 && message === 'jwt expired') {
       try {
@@ -43,7 +42,7 @@ api.interceptors.response.use(
 
         const refreshToken = useAuthStore.getState().refreshToken;
 
-        const response = await axios.get(baseURL + '/auth/mobile-refresh', {
+        const response = await axios.get(baseURL + '/auth/refresh', {
           headers: {
             'Refresh-Token': refreshToken,
             ...headers,
