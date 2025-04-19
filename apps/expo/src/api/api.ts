@@ -30,9 +30,12 @@ api.interceptors.response.use(
   async (responseError) => {
     const originalRequest = responseError.config;
     const { message, statusCode } = responseError.response.data;
+    const isRefreshRequest =
+      originalRequest?.url === `${baseURL}/auth/mobile-refresh`;
+
     if (statusCode === 401 && message === 'jwt expired') {
       try {
-        if (originalRequest._retry) {
+        if (isRefreshRequest || originalRequest._retry) {
           throw new Error('Refresh token failed');
         }
 
