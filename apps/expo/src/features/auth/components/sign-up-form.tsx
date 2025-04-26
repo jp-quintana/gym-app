@@ -3,7 +3,7 @@ import { SIGN_UP_INPUTS } from '../utils/constants';
 import { signUpSchema } from '../utils/schemas';
 import { useSignUp } from '../hooks';
 import { Button, Text } from '@/components/ui';
-import { FormItem, Spinner } from '@/components';
+import { FormItem } from '@/components';
 
 export const SignUpForm = () => {
   const {
