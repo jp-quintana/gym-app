@@ -5,6 +5,7 @@ import { useSignUp } from '../hooks';
 import { Button, Text } from '@/components/ui';
 import { FormItem } from '@/components';
 
+// TODO: fix spinner
 export const SignUpForm = () => {
   const {
     isPending,
