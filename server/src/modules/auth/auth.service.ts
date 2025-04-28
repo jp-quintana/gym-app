@@ -133,6 +133,8 @@ export class AuthService {
     }
 
     if (authSession.expiresAt < new Date()) {
+      authSession.deleted = true;
+      await this.authSessionRepository.save(authSession);
       throw new UnauthorizedException('Refresh token expired.');
     }
 
