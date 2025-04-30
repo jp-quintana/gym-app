@@ -6,6 +6,7 @@ import { envSchema, envConfig } from './config';
 import { AuthModule } from './modules/auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { ApiKeyGuard } from './common/guards';
+import { Oauth2Module } from './modules/oauth2/oauth2.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { ApiKeyGuard } from './common/guards';
     }),
     UserModule,
     AuthModule,
+    Oauth2Module,
   ],
   controllers: [],
   providers: [
