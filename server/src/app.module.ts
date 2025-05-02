@@ -7,7 +7,6 @@ import { AuthModule } from './modules/auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { ApiKeyGuard } from './common/guards';
 import { Oauth2Module } from './modules/oauth2/oauth2.module';
-import { GoogleController } from './oauth2/google/google.controller';
 
 @Module({
   imports: [
@@ -34,7 +33,7 @@ import { GoogleController } from './oauth2/google/google.controller';
     AuthModule,
     Oauth2Module,
   ],
-  controllers: [GoogleController],
+  controllers: [],
   providers: [
     {
       provide: APP_GUARD,
