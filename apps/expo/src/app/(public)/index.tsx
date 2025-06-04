@@ -25,6 +25,11 @@ export default function Index() {
               buttonClassName="bg-white"
               textClassName="text-black"
             />
+            <SocialAuthButtons
+              options={['google']}
+              buttonClassName="bg-white"
+              textClassName="text-black"
+            />
             <Button
               onPress={() => router.navigate('/sign-up')}
               className="bg-cyan-600"
